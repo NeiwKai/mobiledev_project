@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+
 import 'pages/take_picture_screen.dart';
 
 Future<void> main() async {
@@ -16,6 +17,7 @@ Future<void> main() async {
   print("hello world: ${cameras.first}");
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras.first;
+
 
   runApp(
     MaterialApp(
