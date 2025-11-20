@@ -22,6 +22,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   late Interpreter _interpreter;
   bool _isModelReady = false;
+  bool _isTakingPicture = false;
+
 
   @override
   void initState() {
@@ -68,9 +70,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       return List.generate(inputSize, (y) {
         return List.generate(inputSize, (x) {
           final pixel = resized.getPixel(x, y);
-          final r = pixel.r / 255.0;
-          final g = pixel.g / 255.0;
-          final b = pixel.b / 255.0;
+          final r = (pixel.r / 127.5) - 1.0;
+          final g = (pixel.g / 127.5) - 1.0;
+          final b = (pixel.b / 127.5) - 1.0;
           return [r, g, b];
         });
       });
@@ -99,24 +101,30 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (!_isModelReady) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Model is still loading, please wait...')),
-            );
+          if (_isTakingPicture || !_isModelReady) {
+            if (!_isModelReady) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Model is still loading, please wait...')),
+              );
+            }
             return;
           }
+
+          _isTakingPicture = true;
 
           try {
             await _initializeControllerFuture;
 
             final image = await _controller.takePicture();
+
             final input = await imageToInputTensor(File(image.path), 96);
             final output = List.generate(1, (_) => List.filled(1, 0.0));
 
             _interpreter.run(input, output);
 
             final probability = output[0][0];
-            final isPositive = probability > 0.5;
+            final isPositive = probability >= 0.5;
+            print("Probability: ${probability}");
             final label = isPositive ? 'Real' : 'Fake';
 
             if (!context.mounted) return;
@@ -131,6 +139,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             );
           } catch (e) {
             print('❌ Error: $e');
+          } finally {
+            _isTakingPicture = false;
           }
         },
         child: const Icon(Icons.camera_alt),
