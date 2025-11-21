@@ -1,5 +1,10 @@
 # mobiledev_project
 
+### Member
+-   Chavis Rittigun 6688101
+-   Porramin Saengsaksri 6688102
+-   Suppanat Timngarm 6688132
+
 ### Prequisites
 Make sure that in the `pubspec.yaml` have these line <br/>
 ```
