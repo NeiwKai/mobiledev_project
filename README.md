@@ -1,16 +1,20 @@
 # mobiledev_project
 
-A new Flutter project.
+### Prequisites
+Make sure that in the `pubspec.yaml` have these line <br/>
+```
+flutter:
+  uses-material-design: true
 
-## Getting Started
+  assets:
+    - assets/pokemon_tcg_model.tflite
+```
 
-This project is a starting point for a Flutter application.
+### How to run the project
+1.  Clone the repository
+2.  Plugged in a mobile device
+3.  Enable a developer mode on mobile phone (Usually Android developer mode by tapping device number in device info)
+4.  In the project directory, run the command `flutter devices`. It should show your mobile phone.
+5.  Run the command `flutter run`, it will automatically execute the code into mobile phone.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
